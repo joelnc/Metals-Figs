@@ -209,19 +209,12 @@ dev.off()
 
 ## Four panel
 graphics.off()
-dev.new(width=6.5, height=5, units="in")
-par(xaxs="i", yaxs="r", mai=c(.25, .25, 0.25, 0.25), font=2,
+png("ReedyCharCopperFig.png", width=6.5, height=5,
+     units="in", res=400)
+##dev.new(width=6.5, height=5, units="in", xpos=1930,ypos=65)
+par(xaxs="i", yaxs="r", mai=c(.5, .25, 0.05, 0.25), font=2,
     cex.axis=1.2, family="serif", mfrow=c(2,2),
-    omi=c(.30, 1, 0.25, 0))
-## legend(x=(par("usr")[1]+(.6*(par("usr")[2]-par("usr")[1]))),
-##        y=(par("usr")[3]+(.975*(par("usr")[4]-par("usr")[3]))),
-##        bty="n", legend=c("Total Copper", "Dissolved Copper"),
-##        pch=c(16,16), col=c("black", "red"), cex=1, pt.cex=.75)
-## mtext("Sample Result Minus", side=2,
-##       font=2, cex=1.25, line=5.1)
-## mtext("Acute Dissolved Standard (ug/L)", side=2,
-##       font=2, cex=1.25, line=3.8)
-
+    omi=c(.30, .9, 0.6, 0))
 
 ## MY13
 FIMD <- which(allCu$Type.x=="Grab - Filtered" &
@@ -235,10 +228,7 @@ FIMT <- which(allCu$Element.x=="ICS1.1" &
               allCu$Site.x=="MY13")
 xLims <- as.POSIXct(c("2010-01-01 00:00", "2017-04-01 23:00"))
 xLims <- as.numeric(xLims)
-yLims <- c(-1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
-                       abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))),
-           1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
-                      abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))))
+yLims <- c(-65,65)
 plot(allCu$Coldate[FIMT],
      allCu$Result.x[FIMT]-allCu$aStan[FIMT],
      cex=.5, pch=NA, axes=FALSE, ylim=yLims, xlim=xLims,
@@ -253,21 +243,25 @@ lines(x=c(d1, ((d2-d1)*1.04)+d1),
       y=c(0,0), lty=1, col="white")
 points(allCu$Coldate[FIMT],
        allCu$Result.x[FIMT]-allCu$aStan[FIMT],
-       cex=.5, pch=16, ylim=yLims)
+       cex=.8, pch=16, ylim=yLims)
 points(allCu$Coldate[FIMD],
        allCu$Result.x[FIMD]-allCu$aStan[FIMD],
-       cex=.5, pch=18, col="red")
+       cex=.8, pch=16, col="red")
 ## mtext(sitedata$Analyte.x[1], side=3, font=2, cex=1.5, line=.75)
 axThing <- as.POSIXct(c("2010-01-01", "2011-01-01", "2012-01-01",
                         "2013-01-01","2014-01-01","2015-01-01",
                         "2016-01-01", "2017-01-01"))
-axis(1, at=as.numeric(axThing),
+axis(1, at=as.numeric(axThing), labels=FALSE )
+text(x=axThing, y=par("usr")[3]*1.25,
      labels=c("2010","2011","2012","2013","2014","2015","2016","2017"),
-     font=2, las=1)
+     srt=35, xpd=TRUE, cex=1.1)
 axis(side=1, labels=FALSE, tcl=-.2,
      at=seq(from=as.POSIXct("2010-01-01"),to=as.POSIXct("2017-04-01"),by="quarter"))
 axis(2,las=1,font=2)
 box()
+text(x=par("usr")[1] + ((par("usr")[2]-par("usr")[1])*0.1),
+     y=par("usr")[3] + ((par("usr")[4]-par("usr")[3])*0.91),
+     labels="MY13")
 
 ## MY13A
 FIMD <- which(allCu$Type.x=="Grab - Filtered" &
@@ -281,10 +275,11 @@ FIMT <- which(allCu$Element.x=="ICS1.1" &
               allCu$Site.x=="MY13A")
 xLims <- as.POSIXct(c("2010-01-01 00:00", "2017-04-01 23:00"))
 xLims <- as.numeric(xLims)
-yLims <- c(-1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
-                       abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))),
-           1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
-                      abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))))
+## yLims <- c(-1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
+##                        abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))),
+##            1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
+##                       abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))))
+yLims <- c(-10, 10)
 plot(allCu$Coldate[FIMT],
      allCu$Result.x[FIMT]-allCu$aStan[FIMT],
      cex=.5, pch=NA, axes=FALSE, ylim=yLims, xlim=xLims,
@@ -299,20 +294,26 @@ lines(x=c(d1, ((d2-d1)*1.04)+d1),
       y=c(0,0), lty=1, col="white")
 points(allCu$Coldate[FIMT],
        allCu$Result.x[FIMT]-allCu$aStan[FIMT],
-       cex=.5, pch=16, ylim=yLims)
+       cex=0.8, pch=16, ylim=yLims)
 points(allCu$Coldate[FIMD],
        allCu$Result.x[FIMD]-allCu$aStan[FIMD],
-       cex=.5, pch=18, col="red")
+       cex=0.8, pch=16, col="red")
 axThing <- as.POSIXct(c("2010-01-01", "2011-01-01", "2012-01-01",
                         "2013-01-01","2014-01-01","2015-01-01",
                         "2016-01-01", "2017-01-01"))
-axis(1, at=as.numeric(axThing),
+axis(1, at=as.numeric(axThing), labels=FALSE )
+axis(side=1, labels=FALSE, tcl=-.2,
+     at=seq(from=as.POSIXct("2010-01-01"),to=as.POSIXct("2017-04-01"),by="quarter"))
+text(x=axThing, y=par("usr")[3]*1.25,
      labels=c("2010","2011","2012","2013","2014","2015","2016","2017"),
-     font=2, las=1)
+     srt=35, xpd=TRUE, cex=1.1)
 axis(side=1, labels=FALSE, tcl=-.2,
      at=seq(from=as.POSIXct("2010-01-01"),to=as.POSIXct("2017-04-01"),by="quarter"))
 axis(2,las=1,font=2)
 box()
+text(x=par("usr")[1] + ((par("usr")[2]-par("usr")[1])*0.12),
+     y=par("usr")[3] + ((par("usr")[4]-par("usr")[3])*0.91),
+     labels="MY13A")
 
 ## MY13B
 FIMD <- which(allCu$Type.x=="Grab - Filtered" &
@@ -326,10 +327,10 @@ FIMT <- which(allCu$Element.x=="ICS1.1" &
               allCu$Site.x=="MY13B")
 xLims <- as.POSIXct(c("2010-01-01 00:00", "2017-04-01 23:00"))
 xLims <- as.numeric(xLims)
-yLims <- c(-1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
-                       abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))),
-           1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
-                      abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))))
+## yLims <- c(-1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
+##                        abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))),
+##            1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
+##                       abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))))
 plot(allCu$Coldate[FIMT],
      allCu$Result.x[FIMT]-allCu$aStan[FIMT],
      cex=.5, pch=NA, axes=FALSE, ylim=yLims, xlim=xLims,
@@ -344,20 +345,24 @@ lines(x=c(d1, ((d2-d1)*1.04)+d1),
       y=c(0,0), lty=1, col="white")
 points(allCu$Coldate[FIMT],
        allCu$Result.x[FIMT]-allCu$aStan[FIMT],
-       cex=.5, pch=16, ylim=yLims)
+       cex=.8, pch=16, ylim=yLims)
 points(allCu$Coldate[FIMD],
        allCu$Result.x[FIMD]-allCu$aStan[FIMD],
-       cex=.5, pch=18, col="red")
+       cex=.8, pch=16, col="red")
 axThing <- as.POSIXct(c("2010-01-01", "2011-01-01", "2012-01-01",
                         "2013-01-01","2014-01-01","2015-01-01",
                         "2016-01-01", "2017-01-01"))
-axis(1, at=as.numeric(axThing),
+axis(1, at=as.numeric(axThing), labels=FALSE )
+text(x=axThing, y=par("usr")[3]*1.25,
      labels=c("2010","2011","2012","2013","2014","2015","2016","2017"),
-     font=2, las=1)
+     srt=35, xpd=TRUE, cex=1.1)
 axis(side=1, labels=FALSE, tcl=-.2,
      at=seq(from=as.POSIXct("2010-01-01"),to=as.POSIXct("2017-04-01"),by="quarter"))
 axis(2,las=1,font=2)
 box()
+text(x=par("usr")[1] + ((par("usr")[2]-par("usr")[1])*0.12),
+     y=par("usr")[3] + ((par("usr")[4]-par("usr")[3])*0.91),
+     labels="MY13B")
 
 ## MY13C
 FIMD <- which(allCu$Type.x=="Grab - Filtered" &
@@ -371,10 +376,10 @@ FIMT <- which(allCu$Element.x=="ICS1.1" &
               allCu$Site.x=="MY13C")
 xLims <- as.POSIXct(c("2010-01-01 00:00", "2017-04-01 23:00"))
 xLims <- as.numeric(xLims)
-yLims <- c(-1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
-                       abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))),
-           1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
-                      abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))))
+## yLims <- c(-1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
+##                        abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))),
+##            1.01*max(c(abs(allCu$Result.x[FIMT]-allCu$aStan[FIMT]),
+##                       abs(allCu$Result.x[FIMD]-allCu$aStan[FIMD]))))
 plot(allCu$Coldate[FIMT],
      allCu$Result.x[FIMT]-allCu$aStan[FIMT],
      cex=.5, pch=NA, axes=FALSE, ylim=yLims, xlim=xLims,
@@ -389,22 +394,36 @@ lines(x=c(d1, ((d2-d1)*1.04)+d1),
       y=c(0,0), lty=1, col="white")
 points(allCu$Coldate[FIMT],
        allCu$Result.x[FIMT]-allCu$aStan[FIMT],
-       cex=1, pch=16, ylim=yLims)
+       cex=0.8, pch=16, ylim=yLims)
 points(allCu$Coldate[FIMD],
        allCu$Result.x[FIMD]-allCu$aStan[FIMD],
-       cex=1, pch=18, col="red")
+       cex=0.8, pch=16, col="red")
 axThing <- as.POSIXct(c("2010-01-01", "2011-01-01", "2012-01-01",
                         "2013-01-01","2014-01-01","2015-01-01",
                         "2016-01-01", "2017-01-01"))
-axis(1, at=as.numeric(axThing),
+axis(1, at=as.numeric(axThing), labels=FALSE )
+text(x=axThing, y=par("usr")[3]*1.25, ##-2.25,
      labels=c("2010","2011","2012","2013","2014","2015","2016","2017"),
-     font=2, las=1)
+     srt=35, xpd=TRUE, cex=1.1)
 axis(side=1, labels=FALSE, tcl=-.2,
      at=seq(from=as.POSIXct("2010-01-01"),to=as.POSIXct("2017-04-01"),by="quarter"))
 axis(2,las=1,font=2)
 box()
+text(x=par("usr")[1] + ((par("usr")[2]-par("usr")[1])*0.12),
+     y=par("usr")[3] + ((par("usr")[4]-par("usr")[3])*0.91),
+     labels="MY13C")
 
+mtext("Sample Result Minus Acute",
+      side=2, font=2, cex=1.5, line=3.5, outer=TRUE)
+mtext("Dissolved Standard (ug/L)",
+      side=2, font=2, cex=1.5, line=2.05, outer=TRUE)
 
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
+legend("topleft", legend=c("Total Copper", "Dissolved Copper   "),
+       pch=c(16,16), col=c("black", "red"), cex=1.35, pt.cex=1.1,
+       horiz=TRUE, inset=c(0.28, 0.04), y.intersp=.4)
+graphics.off()
 
 
 
